@@ -1,0 +1,42 @@
+services:
+  app:
+    container_name: ${CONTAINER_PREFIX}_app
+    build:
+      context: docker
+      dockerfile: Dockerfile
+    volumes:
+      - ./.composer-docker/cache:/root/.composer/cache:delegated
+      - ./:/app:delegated
+    environment:
+      - PHP_ENABLE_XDEBUG=${PHP_ENABLE_XDEBUG}
+      - XDEBUG_MODE=develop,debug
+    ports:
+      - '8080:80'
+    depends_on:
+      - mysql
+      - memcached
+
+  mysql:
+    container_name: ${CONTAINER_PREFIX}_db
+    image: mysql:9.5.0
+    volumes:
+      - MYSQL_VOLUME:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    ports:
+      - '33060:3306'
+
+  memcached:
+    container_name: ${CONTAINER_PREFIX}_memcached
+    image: memcached:1.6.39
+    command:
+      - --conn-limit=1024
+      - --memory-limit=64
+      - --threads=4
+
+volumes:
+  MYSQL_VOLUME:
+    name: "${CONTAINER_PREFIX}_mysql"
