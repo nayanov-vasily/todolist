@@ -23,11 +23,6 @@ class TaskController extends \yii\rest\ActiveController
         return $actions;
     }
 
-    protected function afterRun()
-    {
-        Yii::$app->cache->flush();
-    }
-
     public function afterAction($action, $result): mixed
     {
         if (in_array($action->id, [
