@@ -2,9 +2,13 @@
 
 namespace app\modules\api;
 
-use yii\base\Module as BaseModule;
-
-
-use yii\caching\MemCache;
-
-class Module extends BaseModule {}
+/**
+ * Модуль реализующий API для работы с задачами
+ */
+class Module extends \yii\base\Module
+{
+    public function init()
+    {
+        parent::init();
+    }
+}

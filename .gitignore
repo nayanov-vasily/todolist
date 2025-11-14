@@ -35,3 +35,4 @@ tests/_support/_generated
 .composer-docker
 config/db.php
 .env
+.vscode
